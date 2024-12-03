@@ -1,10 +1,10 @@
-package com.mdd.mdd_backend;
+package com.mdd;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MddBackendApplicationTests {
+class MddApplicationTests {
 
 	@Test
 	void contextLoads() {

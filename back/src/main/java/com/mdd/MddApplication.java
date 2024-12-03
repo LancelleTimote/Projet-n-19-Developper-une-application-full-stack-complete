@@ -1,13 +1,13 @@
-package com.mdd.mdd_backend;
+package com.mdd;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MddBackendApplication {
+public class MddApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MddBackendApplication.class, args);
+		SpringApplication.run(MddApplication.class, args);
 	}
 
 }
