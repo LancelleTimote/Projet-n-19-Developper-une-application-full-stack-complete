@@ -58,7 +58,18 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(SWAGGER_WHITELIST).permitAll()
+
+                        .requestMatchers("/api/posts").permitAll()
+                        .requestMatchers("/api/posts/**").permitAll()
+                        .requestMatchers("/api/posts").authenticated()
+                        .requestMatchers("/api/posts/**").authenticated()
+
+                        .requestMatchers("/api/comments/post/**").permitAll()
+                        .requestMatchers("/api/comments").authenticated()
+
                         .requestMatchers("/api/subscriptions/**").authenticated()
+
                         .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session
