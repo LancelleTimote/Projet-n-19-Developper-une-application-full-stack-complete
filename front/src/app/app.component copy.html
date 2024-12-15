@@ -1,0 +1,36 @@
+<div class="app">
+  <ng-container *ngIf="$isLogged() | async; else notLogged">
+    <!-- Layout pour les utilisateurs connectés -->
+    <mat-toolbar color="primary" class="header">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <!-- Logo -->
+        <img src="assets/logo_p6/logo.png" alt="Logo" class="logo" />
+
+        <!-- Liens de navigation -->
+        <div>
+          <span routerLink="/posts" class="link">Articles</span>
+          <span routerLink="/topics" class="link">Thèmes</span>
+          <span routerLink="/me" class="link">Profil</span>
+        </div>
+      </div>
+    </mat-toolbar>
+
+    <!-- Contenu principal pour les utilisateurs connectés -->
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </ng-container>
+
+  <!-- Page de bienvenue pour les utilisateurs non connectés -->
+  <ng-template #notLogged>
+    <div class="welcome">
+      <!-- Logo centré -->
+      <img src="../assets/logo_p6.png" alt="Logo" class="big-logo" />
+      <!-- Boutons de connexion et d'inscription -->
+      <div class="actions">
+        <button routerLink="/login">Se connecter</button>
+        <button routerLink="/register">S'inscrire</button>
+      </div>
+    </div>
+  </ng-template>
+</div>

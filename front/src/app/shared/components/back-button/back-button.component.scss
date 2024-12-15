@@ -1,0 +1,18 @@
+.back-button {
+  display: flex;
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  margin: 20px;
+
+  mat-icon {
+    font-size: 30px;
+    height: 30px;
+    width: 50px;
+  }
+
+  &:hover {
+    color: rgba(119, 99, 197, 1);
+  }
+}

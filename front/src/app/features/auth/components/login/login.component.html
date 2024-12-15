@@ -1,40 +1,31 @@
+<app-header class="desktop-header"></app-header>
+<app-back-button></app-back-button>
+<div class="mobile-logo" *ngIf="isMobile">
+  <img src="../../../../../assets/logo_p6.png" alt="Logo de MDD" />
+</div>
 <div class="login">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Login</mat-card-title>
-    </mat-card-header>
-    <form class="login-form" [formGroup]="form" (ngSubmit)="submit()">
-      <mat-card-content>
+  <h2 class="login_title">Se connecter</h2>
+  <form class="login_form" [formGroup]="form" (ngSubmit)="submit()">
+    <mat-card-content>
+      <div class="form-group">
+        <label for="identifier">E-mail ou nom d'utilisateur</label>
         <mat-form-field>
-          <input matInput placeholder="Email" formControlName="email" />
+          <input id="identifier" matInput formControlName="identifier" />
         </mat-form-field>
+      </div>
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
         <mat-form-field>
           <input
+            id="password"
             matInput
             [type]="hide ? 'password' : 'text'"
-            placeholder="Password"
             formControlName="password"
           />
-          <button
-            mat-icon-button
-            matSuffix
-            (click)="hide = !hide"
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hide"
-          >
-            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-          </button>
         </mat-form-field>
-      </mat-card-content>
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="form.invalid"
-      >
-        Submit
-      </button>
-      <p *ngIf="onError" class="error">An error occurred</p>
-    </form>
-  </mat-card>
+      </div>
+    </mat-card-content>
+    <button class="submit-button" type="submit">Se connecter</button>
+    <p *ngIf="onError" class="error">An error occurred</p>
+  </form>
 </div>

@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 const materialModules = [
   MatButtonModule,
@@ -22,6 +23,7 @@ const materialModules = [
   declarations: [RegisterComponent, LoginComponent],
   imports: [
     AuthRoutingModule,
+    SharedModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

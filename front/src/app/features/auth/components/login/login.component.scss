@@ -1,8 +1,108 @@
 .login {
-  margin-top: 30px;
-  mat-card {
-    margin: 20px;
-    max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &_title {
+    font-size: 24px;
+    font-weight: normal;
+    margin-bottom: 30px;
+  }
+
+  &_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
+    max-width: 400px;
+
+    mat-card-content {
+      width: 100%;
+    }
+
+    .form-group {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+
+      label {
+        align-self: flex-start;
+        font-size: 14px;
+      }
+
+      mat-form-field {
+        width: 100%;
+        .mat-form-field-infix {
+          padding: 0;
+          border: 0;
+        }
+
+        .mat-input-element {
+          &:focus {
+            border-color: rgba(119, 99, 197, 1);
+          }
+        }
+
+        .mat-form-field-underline {
+          display: none !important;
+        }
+      }
+
+      input {
+        border: 1px solid black;
+        padding: 10px;
+        border-radius: 5px;
+      }
+    }
+
+    .submit-button {
+      border: none;
+      background-color: rgba(119, 99, 197, 1);
+      color: white;
+      padding: 10px 20px;
+      margin: 0 30px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+}
+
+.mobile-logo {
+  display: none;
+
+  img {
+    width: 80%;
+    max-width: 200px;
+  }
+}
+
+.desktop-header {
+  display: block;
+}
+
+@media (max-width: 425px) {
+  .login_form {
+    width: 80%;
+  }
+
+  .form-group {
+    mat-form-field {
+      .mat-form-field-infix {
+        width: 90%;
+        flex: none;
+      }
+    }
+  }
+
+  .desktop-header {
+    display: none !important;
+  }
+
+  .mobile-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
