@@ -7,7 +7,6 @@ import { DetailComponent } from './components/detail/detail.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
@@ -31,7 +30,6 @@ const materialModules = [
   declarations: [ListComponent, FormComponent, DetailComponent],
   imports: [
     CommonModule,
-    FlexLayoutModule,
     FormsModule,
     MaterialFileInputModule,
     ReactiveFormsModule,

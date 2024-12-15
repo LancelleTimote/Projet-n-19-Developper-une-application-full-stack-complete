@@ -1,0 +1,57 @@
+.app {
+  height: 100%;
+  &_container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    .logo {
+      width: 500px;
+      margin-bottom: 20px;
+    }
+    &_buttons {
+      display: flex;
+      flex-direction: row;
+      .custom-button {
+        background-color: white;
+        border: 1px solid black;
+        font-weight: bold;
+        color: black;
+        padding: 10px 20px;
+        margin: 0 30px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .custom-button:hover {
+        background-color: rgba(119, 99, 197, 1);
+        color: white;
+        border: none;
+      }
+
+      .custom-button:focus {
+        outline: none;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .custom-button:active {
+        transform: scale(0.98);
+      }
+    }
+
+    @media (max-width: 425px) {
+      .logo {
+        width: 250px;
+        margin-bottom: 10px;
+      }
+      .app_container_buttons {
+        flex-direction: column;
+        .custom-button {
+          margin: 20px 0;
+        }
+      }
+    }
+  }
+}

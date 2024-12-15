@@ -4,10 +4,9 @@ import { AuthService } from '../features/auth/services/auth.service';
 import { User } from '../interfaces/user.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SessionService {
-
   public isLogged = false;
   public user: User | undefined;
 
@@ -15,6 +14,10 @@ export class SessionService {
 
   public $isLogged(): Observable<boolean> {
     return this.isLoggedSubject.asObservable();
+  }
+
+  public isLoggedIn(): boolean {
+    return this.isLogged;
   }
 
   public logIn(user: User): void {

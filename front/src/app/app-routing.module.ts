@@ -7,10 +7,10 @@ import { UnauthGuard } from './guards/unauth.guard';
 
 const routes: Routes = [
   {
-    path: 'rentals',
+    path: 'posts',
     canActivate: [AuthGuard],
     loadChildren: () =>
-      import('./features/posts/post.module').then((m) => m.PostsModule),
+      import('./features/posts/posts.module').then((m) => m.PostsModule),
   },
   {
     path: '',

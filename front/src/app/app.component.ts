@@ -40,4 +40,10 @@ export class AppComponent implements OnInit {
       }
     );
   }
+
+  isLoginOrRegisterPage(): boolean {
+    return (
+      this.router.url.includes('login') || this.router.url.includes('register')
+    );
+  }
 }
