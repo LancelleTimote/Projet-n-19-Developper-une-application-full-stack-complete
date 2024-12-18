@@ -21,25 +21,16 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     public User register(User user) {
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new RuntimeException("Email is already in use.");
-        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     public User login(String email, String password) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            if (passwordEncoder.matches(password, user.getPassword())) {
-                return user;
-            } else {
-                throw new RuntimeException("Invalid password.");
-            }
-        } else {
-            throw new RuntimeException("User not found.");
+        if (optionalUser.isPresent() && passwordEncoder.matches(password, optionalUser.get().getPassword())) {
+            return optionalUser.get();
         }
+        return null;
     }
 
     public User getUserById(Long id) {

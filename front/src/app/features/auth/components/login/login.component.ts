@@ -20,7 +20,7 @@ export class LoginComponent {
   isMobile: boolean = false;
 
   public form = this.fb.group({
-    identifier: ['', [Validators.required]],
+    email: ['', [Validators.required]],
     password: ['', [Validators.required, Validators.min(3)]],
   });
 
@@ -41,11 +41,7 @@ export class LoginComponent {
   }
 
   public submit(): void {
-    const loginRequest = {
-      identifier: this.form.value.identifier,
-      password: this.form.value.password,
-    } as LoginRequest;
-
+    const loginRequest = this.form.value as LoginRequest;
     this.authService.login(loginRequest).subscribe(
       (response: AuthSuccess) => {
         localStorage.setItem('token', response.token);

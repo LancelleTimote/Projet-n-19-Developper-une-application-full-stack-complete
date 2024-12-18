@@ -18,9 +18,8 @@ public class AuthController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(
-            @RequestBody User user) {
-        if (user.getName() == null || user.getEmail() == null || user.getPassword() == null) {
+    public ResponseEntity<?> register(@RequestBody User user) {
+        if (user.getUsername() == null || user.getEmail() == null || user.getPassword() == null) {
             return ResponseEntity.badRequest().body("Invalid input");
         }
         User registeredUser = userService.register(user);
@@ -54,5 +53,4 @@ public class AuthController {
         }
         return ResponseEntity.ok(user);
     }
-
 }
