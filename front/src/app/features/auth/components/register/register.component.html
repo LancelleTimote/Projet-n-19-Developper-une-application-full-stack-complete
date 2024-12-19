@@ -29,6 +29,10 @@
             formControlName="password"
           />
         </mat-form-field>
+        <mat-error *ngIf="form.get('password')?.hasError('invalidPassword')">
+          Le mot de passe doit contenir au moins 8 caractères, une majuscule,
+          une minuscule, un chiffre, et un caractère spécial.
+        </mat-error>
       </div>
     </mat-card-content>
     <button class="submit-button" type="submit">S'inscrire</button>

@@ -7,6 +7,7 @@ import { RegisterRequest } from '../../interfaces/registerRequest.interface';
 import { AuthSuccess } from '../../interfaces/authSuccess.interface';
 import { User } from 'src/app/interfaces/user.interface';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { passwordValidator } from '../../../../validators/password.validator';
 
 @Component({
   selector: 'app-register',
@@ -22,7 +23,7 @@ export class RegisterComponent {
   public form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     username: ['', [Validators.required, Validators.min(3)]],
-    password: ['', [Validators.required, Validators.min(3)]],
+    password: ['', [Validators.required, passwordValidator]],
   });
 
   constructor(
@@ -41,17 +42,24 @@ export class RegisterComponent {
       });
   }
 
-  public submit(): void {
+  submit(): void {
     const registerRequest = this.form.value as RegisterRequest;
+
     this.authService.register(registerRequest).subscribe(
       (response: AuthSuccess) => {
         localStorage.setItem('token', response.token);
-        this.authService.me().subscribe((user: User) => {
-          this.sessionService.logIn(user);
-          this.router.navigate(['/posts']);
-        });
+        this.authService.me().subscribe(
+          (user: User) => {
+            this.sessionService.logIn(user);
+            this.router.navigate(['/posts']);
+          },
+          (error) => console.error('Error fetching user profile:', error)
+        );
       },
-      (error) => (this.onError = true)
+      (error) => {
+        console.error('Registration error:', error);
+        this.onError = true;
+      }
     );
   }
 }

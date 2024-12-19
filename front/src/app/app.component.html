@@ -2,7 +2,7 @@
   <!-- Header si l'utilisateur est connecté -->
   <div *ngIf="$isLogged() | async; else notLogged">
     <mat-toolbar>
-      <span routerLink="rentals" class="link">Rentals</span>
+      <span routerLink="rentals" class="link">Posts</span>
       <span routerLink="me" class="link">Account</span>
       <span (click)="logout()" class="link">Logout</span>
     </mat-toolbar>

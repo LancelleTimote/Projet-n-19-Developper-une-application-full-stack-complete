@@ -17,13 +17,24 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    private boolean isValidPassword(String password) {
+        String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+        return password != null && password.matches(passwordRegex);
+    }
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
         if (user.getUsername() == null || user.getEmail() == null || user.getPassword() == null) {
             return ResponseEntity.badRequest().body("Invalid input");
         }
+
+        if (!isValidPassword(user.getPassword())) {
+            return ResponseEntity.badRequest().body("Invalid password format. Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a digit, and a special character.");
+        }
+
         User registeredUser = userService.register(user);
         final String jwtToken = jwtUtil.generateToken(userService.loadUserByUsername(user.getEmail()));
+
         return ResponseEntity.ok(new AuthResponse(jwtToken));
     }
 
