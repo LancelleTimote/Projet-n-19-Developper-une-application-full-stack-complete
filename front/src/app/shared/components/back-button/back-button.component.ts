@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 @Component({
@@ -7,9 +8,17 @@ import { Location } from '@angular/common';
   styleUrls: ['./back-button.component.scss'],
 })
 export class BackButtonComponent {
-  constructor(private location: Location) {}
+  constructor(private location: Location, private router: Router) {}
 
   goBack(): void {
-    this.location.back();
+    const currentRoute = this.router.url;
+    if (
+      ['/login', '/register'].includes(currentRoute) ||
+      !window.history.length
+    ) {
+      this.router.navigate(['/']);
+    } else {
+      this.location.back();
+    }
   }
 }

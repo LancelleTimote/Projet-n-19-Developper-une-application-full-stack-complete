@@ -1,15 +1,8 @@
 <div class="app">
-  <!-- Header si l'utilisateur est connecté -->
   <div *ngIf="$isLogged() | async; else notLogged">
-    <mat-toolbar>
-      <span routerLink="rentals" class="link">Posts</span>
-      <span routerLink="me" class="link">Account</span>
-      <span (click)="logout()" class="link">Logout</span>
-    </mat-toolbar>
     <router-outlet></router-outlet>
   </div>
 
-  <!-- Template si l'utilisateur n'est pas connecté -->
   <ng-template #notLogged>
     <ng-container *ngIf="!isLoginOrRegisterPage(); else showOutlet">
       <div class="app_container">
