@@ -26,21 +26,4 @@ public class TopicService {
     public Optional<Topic> getTopicByName(String name) {
         return topicRepository.findByName(name);
     }
-
-    public Topic createTopic(Topic topic) {
-        return topicRepository.save(topic);
-    }
-
-    public Topic updateTopic(Long id, Topic updatedTopic) {
-        return topicRepository.findById(id)
-                .map(existingTopic -> {
-                    existingTopic.setName(updatedTopic.getName());
-                    existingTopic.setDescription(updatedTopic.getDescription());
-                    return topicRepository.save(existingTopic);
-                }).orElseThrow(() -> new RuntimeException("Topic not found"));
-    }
-
-    public void deleteTopic(Long id) {
-        topicRepository.deleteById(id);
-    }
 }

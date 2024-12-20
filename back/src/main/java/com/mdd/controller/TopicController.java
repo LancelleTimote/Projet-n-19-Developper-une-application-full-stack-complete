@@ -27,20 +27,4 @@ public class TopicController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
-    @PostMapping
-    public ResponseEntity<Topic> createTopic(@RequestBody Topic topic) {
-        return ResponseEntity.ok(topicService.createTopic(topic));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Topic> updateTopic(@PathVariable Long id, @RequestBody Topic topic) {
-        return ResponseEntity.ok(topicService.updateTopic(id, topic));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTopic(@PathVariable Long id) {
-        topicService.deleteTopic(id);
-        return ResponseEntity.noContent().build();
-    }
 }

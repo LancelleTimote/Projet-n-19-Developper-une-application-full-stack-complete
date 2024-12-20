@@ -1,1 +1,37 @@
+<app-header></app-header>
 <app-back-button></app-back-button>
+<div class="post-create">
+  <h2 class="post-create_title">Créer un nouvel article</h2>
+  <form class="post-create_form" [formGroup]="form" (ngSubmit)="submit()">
+    <mat-card-content>
+      <mat-form-field>
+        <input
+          id="topic"
+          matInput
+          formControlName="topic"
+          placeholder="Sélectionner un thème"
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <input
+          id="title"
+          matInput
+          formControlName="title"
+          placeholder="Titre de l'article"
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <input
+          id="content"
+          matInput
+          formControlName="content"
+          placeholder="Contenu de l'article"
+        />
+      </mat-form-field>
+    </mat-card-content>
+    <app-button label="Créer" type="submit"></app-button>
+    <p *ngIf="onError" class="error">An error occurred</p>
+  </form>
+</div>
