@@ -1,1 +1,25 @@
-<p>list works!</p>
+<app-header></app-header>
+<div class="topic-list">
+  <h2>Liste des Thèmes</h2>
+  <mat-grid-list cols="2" rowHeight="400px" gutterSize="16px">
+    <mat-grid-tile *ngFor="let topic of topics">
+      <mat-card class="topic-card">
+        <mat-card-header>
+          <mat-card-title>{{ topic.name }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ topic.description }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="subscribe(topic.id)"
+          >
+            S'abonner
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
