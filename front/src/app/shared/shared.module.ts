@@ -5,6 +5,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { BackButtonComponent } from './components/back-button/back-button.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ButtonComponent } from './components/button/button.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,7 @@ import { ButtonComponent } from './components/button/button.component';
     BackButtonComponent,
     ButtonComponent,
   ],
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule, RouterModule],
   exports: [
     OwnerInfoComponent,
     HeaderComponent,

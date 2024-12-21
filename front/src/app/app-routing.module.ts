@@ -13,6 +13,12 @@ const routes: Routes = [
       import('./features/posts/posts.module').then((m) => m.PostsModule),
   },
   {
+    path: 'topics',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./features/topics/topics.module').then((m) => m.TopicsModule),
+  },
+  {
     path: '',
     canActivate: [UnauthGuard],
     loadChildren: () =>
