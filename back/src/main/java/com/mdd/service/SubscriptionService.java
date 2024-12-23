@@ -29,6 +29,7 @@ public class SubscriptionService {
     public List<Subscription> getUserSubscriptions(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
+
         return subscriptionRepository.findByUser(user);
     }
 

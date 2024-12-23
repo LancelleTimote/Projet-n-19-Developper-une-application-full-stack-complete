@@ -23,7 +23,6 @@ export class DetailsComponent implements OnInit {
   loadSubscriptions(): void {
     this.detailsService.getUserSubscriptions().subscribe({
       next: (data) => {
-        console.log('Données des abonnements reçues :', data);
         this.subscriptions = data;
       },
       error: (err) => {

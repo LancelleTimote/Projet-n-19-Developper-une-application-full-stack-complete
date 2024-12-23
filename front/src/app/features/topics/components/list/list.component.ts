@@ -25,7 +25,7 @@ export class ListComponent implements OnInit {
   subscribe(topicId: number): void {
     this.topicsService.subscribeToTopic(topicId).subscribe(
       (response) => {
-        console.log('Abonnement réussi :', response); // Ajoutez un log pour voir la réponse
+        console.log('Abonnement réussi :', response);
       },
       (error) => {
         console.error("Erreur lors de l'abonnement", error);

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/subscriptions")
@@ -19,11 +20,18 @@ public class SubscriptionController {
 
     @Autowired
     private SubscriptionService subscriptionService;
-
     @GetMapping
-    public List<Subscription> getUserSubscriptions() {
+    public List<Map<String, Object>> getUserSubscriptions() {
         String email = getAuthenticatedEmail();
-        return subscriptionService.getUserSubscriptions(email);
+        List<Subscription> subscriptions = subscriptionService.getUserSubscriptions(email);
+
+        return subscriptions.stream().map(subscription -> {
+            Map<String, Object> result = new java.util.HashMap<>();
+            result.put("topicId", subscription.getTopic().getId());
+            result.put("topicTitle", subscription.getTopic().getName());
+            result.put("topicDescription", subscription.getTopic().getDescription());
+            return result;
+        }).collect(Collectors.toList());
     }
 
     @PostMapping("/{topicId}")
