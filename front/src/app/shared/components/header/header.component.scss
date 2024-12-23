@@ -35,19 +35,5 @@
         height: 40px;
       }
     }
-
-    .logout-button {
-      margin-left: 20px;
-      padding: 5px 10px;
-      border: none;
-      background-color: red;
-      color: white;
-      cursor: pointer;
-      border-radius: 5px;
-
-      &:hover {
-        background-color: darkred;
-      }
-    }
   }
 }

@@ -26,20 +26,20 @@ public class SubscriptionService {
     @Autowired
     private TopicRepository topicRepository;
 
-    public List<Subscription> getUserSubscriptions(String username) {
-        User user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new UserNotFoundException("User with email " + username + " not found"));
+    public List<Subscription> getUserSubscriptions(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
         return subscriptionRepository.findByUser(user);
     }
 
-    public void subscribeToTopic(String username, Long topicId) {
-        User user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new UserNotFoundException("User with email " + username + " not found"));
+    public void subscribeToTopic(String email, Long topicId) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
         Topic topic = topicRepository.findById(topicId)
                 .orElseThrow(() -> new TopicNotFoundException("Topic with ID " + topicId + " not found"));
 
         if (subscriptionRepository.existsByUserAndTopic(user, topic)) {
-            throw new AlreadySubscribedException("User is already subscribed to this topic");
+            throw new AlreadySubscribedException("User " + user.getEmail() + " is already subscribed to topic " + topic.getName());
         }
 
         Subscription subscription = new Subscription();
@@ -48,9 +48,9 @@ public class SubscriptionService {
         subscriptionRepository.save(subscription);
     }
 
-    public void unsubscribeFromTopic(String username, Long topicId) {
-        User user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new UserNotFoundException("User with email " + username + " not found"));
+    public void unsubscribeFromTopic(String email, Long topicId) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
         Topic topic = topicRepository.findById(topicId)
                 .orElseThrow(() -> new TopicNotFoundException("Topic with ID " + topicId + " not found"));
 

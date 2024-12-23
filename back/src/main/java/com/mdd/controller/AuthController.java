@@ -24,7 +24,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
-        if (user.getUsername() == null || user.getEmail() == null || user.getPassword() == null) {
+        if (user.getEmail() == null || user.getPassword() == null) {
             return ResponseEntity.badRequest().body("Invalid input");
         }
 
@@ -39,8 +39,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(
-            @RequestBody User user) {
+    public ResponseEntity<?> login(@RequestBody User user) {
         User loggedInUser = userService.login(user.getEmail(), user.getPassword());
         if (loggedInUser == null) {
             return ResponseEntity.status(401).body("Invalid credentials");
@@ -50,15 +49,14 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<?> getProfile(
-            @RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<?> getProfile(@RequestHeader("Authorization") String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return ResponseEntity.status(401).body("Unauthorized");
         }
         String token = authHeader.substring(7);
-        String username = jwtUtil.extractUsername(token);
+        String email = jwtUtil.extractUsername(token);
 
-        User user = userService.getUserByEmail(username);
+        User user = userService.getUserByEmail(email);
         if (user == null) {
             return ResponseEntity.status(401).body("Unauthorized");
         }

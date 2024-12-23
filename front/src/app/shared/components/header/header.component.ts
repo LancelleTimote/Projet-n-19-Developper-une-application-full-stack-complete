@@ -19,12 +19,6 @@ export class HeaderComponent implements OnInit {
   }
 
   goToProfile(): void {
-    console.log('Navigating to profile');
-    this.router.navigate(['/profile']);
-  }
-
-  logOut(): void {
-    this.sessionService.logOut();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/profile/details']);
   }
 }

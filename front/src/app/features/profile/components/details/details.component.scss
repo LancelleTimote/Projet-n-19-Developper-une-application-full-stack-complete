@@ -1,0 +1,20 @@
+.subscription-card {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.unsubscribe-button {
+  background-color: #ff4c4c;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.unsubscribe-button:hover {
+  background-color: #e04343;
+}

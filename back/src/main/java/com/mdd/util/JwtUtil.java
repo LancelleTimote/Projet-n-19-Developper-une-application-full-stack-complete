@@ -21,8 +21,13 @@ public class JwtUtil {
     private final Key SECRET_KEY;
 
     public JwtUtil(@Value("${jwt.secret}") String secretKey) {
-        byte[] decodedKey = Base64.getDecoder().decode(secretKey);
-        this.SECRET_KEY = Keys.hmacShaKeyFor(decodedKey);
+        try {
+            byte[] decodedKey = Base64.getDecoder().decode(secretKey);
+            this.SECRET_KEY = Keys.hmacShaKeyFor(decodedKey);
+            System.out.println("Successfully loaded secret key.");
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid JWT secret key: Ensure it is Base64 encoded and at least 32 bytes long.");
+        }
     }
 
     public String extractUsername(String token) {
@@ -39,7 +44,12 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        try {
+            return Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token).getBody();
+        } catch (Exception e) {
+            System.out.println("Failed to parse JWT: " + e.getMessage());
+            throw e;
+        }
     }
 
     private Boolean isTokenExpired(String token) {
@@ -52,17 +62,36 @@ public class JwtUtil {
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
                 .compact();
+        System.out.println("Generated JWT: " + token);
+        return token;
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        try {
+            final String emailFromToken = extractUsername(token);
+
+            if (!emailFromToken.equals(userDetails.getUsername())) {
+                System.out.println("JWT validation failed: email mismatch. Token email: " + emailFromToken + ", Expected email: " + userDetails.getUsername());
+                return false;
+            }
+
+            if (isTokenExpired(token)) {
+                System.out.println("JWT validation failed: token expired.");
+                return false;
+            }
+
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("Token validation failed: " + e.getMessage());
+            return false;
+        }
     }
 }

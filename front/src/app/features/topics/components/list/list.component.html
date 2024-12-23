@@ -11,13 +11,11 @@
           <p>{{ topic.description }}</p>
         </mat-card-content>
         <mat-card-actions>
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="subscribe(topic.id)"
-          >
-            S'abonner
-          </button>
+          <app-button
+            label="S'abonner"
+            type="button"
+            (onClick)="subscribe(topic.id)"
+          ></app-button>
         </mat-card-actions>
       </mat-card>
     </mat-grid-tile>

@@ -23,6 +23,13 @@ export class ListComponent implements OnInit {
   }
 
   subscribe(topicId: number): void {
-    console.log(`Abonnement au topic avec ID : ${topicId}`);
+    this.topicsService.subscribeToTopic(topicId).subscribe(
+      (response) => {
+        console.log('Abonnement réussi :', response); // Ajoutez un log pour voir la réponse
+      },
+      (error) => {
+        console.error("Erreur lors de l'abonnement", error);
+      }
+    );
   }
 }

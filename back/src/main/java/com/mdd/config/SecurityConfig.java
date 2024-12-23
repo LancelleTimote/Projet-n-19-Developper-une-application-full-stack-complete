@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -58,18 +59,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Autoriser les requêtes OPTIONS
                         .requestMatchers(SWAGGER_WHITELIST).permitAll()
-
                         .requestMatchers("/api/posts").permitAll()
                         .requestMatchers("/api/posts/**").permitAll()
-                        .requestMatchers("/api/posts").authenticated()
-                        .requestMatchers("/api/posts/**").authenticated()
-
-                        .requestMatchers("/api/comments/post/**").permitAll()
-                        .requestMatchers("/api/comments").authenticated()
-
                         .requestMatchers("/api/subscriptions/**").authenticated()
-
                         .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session

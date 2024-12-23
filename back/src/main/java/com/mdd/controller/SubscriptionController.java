@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/subscriptions")
@@ -21,33 +22,33 @@ public class SubscriptionController {
 
     @GetMapping
     public List<Subscription> getUserSubscriptions() {
-        String username = getAuthenticatedUsername();
-        return subscriptionService.getUserSubscriptions(username);
+        String email = getAuthenticatedEmail();
+        return subscriptionService.getUserSubscriptions(email);
     }
 
     @PostMapping("/{topicId}")
-    public ResponseEntity<String> subscribeToTopic(@PathVariable Long topicId) {
-        String username = getAuthenticatedUsername();
+    public ResponseEntity<Void> subscribeToTopic(@PathVariable Long topicId) {
+        String email = getAuthenticatedEmail();
         try {
-            subscriptionService.subscribeToTopic(username, topicId);
-            return new ResponseEntity<>("Successfully subscribed to topic", HttpStatus.CREATED);
+            subscriptionService.subscribeToTopic(email, topicId);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (AlreadySubscribedException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
     @DeleteMapping("/{topicId}")
     public ResponseEntity<String> unsubscribeFromTopic(@PathVariable Long topicId) {
-        String username = getAuthenticatedUsername();
+        String email = getAuthenticatedEmail();
         try {
-            subscriptionService.unsubscribeFromTopic(username, topicId);
+            subscriptionService.unsubscribeFromTopic(email, topicId);
             return new ResponseEntity<>("Successfully unsubscribed from topic", HttpStatus.OK);
         } catch (UserNotFoundException | TopicNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
-    private String getAuthenticatedUsername() {
+    private String getAuthenticatedEmail() {
         return org.springframework.security.core.context.SecurityContextHolder.getContext()
                 .getAuthentication().getName();
     }

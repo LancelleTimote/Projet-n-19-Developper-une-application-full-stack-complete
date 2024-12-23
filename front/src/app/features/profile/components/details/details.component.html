@@ -1,0 +1,31 @@
+<app-header></app-header>
+<div>
+  <div>
+    <h2>Profil utilisateur</h2>
+    <!-- <mat-form-field>
+      <input id="username" matInput formControlName="username" />
+    </mat-form-field>
+    <mat-form-field>
+      <input id="email" matInput formControlName="email" />
+    </mat-form-field>
+    <app-button label="Sauvegarder" type="submit"></app-button> -->
+    <!-- <button class="logout-button" (click)="logOut()">Déconnexion</button> -->
+  </div>
+  <div>
+    <h2>Abonnements</h2>
+    <div *ngIf="subscriptions.length === 0">Aucun abonnement.</div>
+
+    <div *ngFor="let subscription of subscriptions">
+      <div class="subscription-card">
+        <h3>{{ subscription.topicTitle }}</h3>
+        <p>{{ subscription.topicDescription }}</p>
+        <button
+          (click)="unsubscribe(subscription.topicId)"
+          class="unsubscribe-button"
+        >
+          Se désabonner
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

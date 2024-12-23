@@ -17,7 +17,7 @@ export class PostsService {
     return this.httpClient.get<PostsResponse>(this.pathService);
   }
 
-  public detail(id: string): Observable<Post> {
+  public details(id: string): Observable<Post> {
     return this.httpClient.get<Post>(`${this.pathService}/${id}`);
   }
 
