@@ -7,26 +7,21 @@ import { User } from '../interfaces/user.interface';
   providedIn: 'root',
 })
 export class SessionService {
+  private isLoggedSubject = new BehaviorSubject<boolean>(false);
   public isLogged = false;
   public user: User | undefined;
-
-  private isLoggedSubject = new BehaviorSubject<boolean>(this.isLogged);
 
   public $isLogged(): Observable<boolean> {
     return this.isLoggedSubject.asObservable();
   }
 
-  public isLoggedIn(): boolean {
-    return this.isLogged;
-  }
-
-  public logIn(user: User): void {
+  logIn(user: User): void {
     this.user = user;
     this.isLogged = true;
     this.next();
   }
 
-  public logOut(): void {
+  logOut(): void {
     localStorage.removeItem('token');
     this.user = undefined;
     this.isLogged = false;
@@ -35,5 +30,10 @@ export class SessionService {
 
   private next(): void {
     this.isLoggedSubject.next(this.isLogged);
+  }
+
+  getCurrentUser(): any {
+    const user = localStorage.getItem('currentUser');
+    return user ? JSON.parse(user) : null;
   }
 }

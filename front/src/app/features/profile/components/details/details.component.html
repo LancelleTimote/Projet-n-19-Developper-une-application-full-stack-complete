@@ -2,14 +2,28 @@
 <div>
   <div>
     <h2>Profil utilisateur</h2>
-    <!-- <mat-form-field>
-      <input id="username" matInput formControlName="username" />
-    </mat-form-field>
-    <mat-form-field>
-      <input id="email" matInput formControlName="email" />
-    </mat-form-field>
-    <app-button label="Sauvegarder" type="submit"></app-button> -->
-    <!-- <button class="logout-button" (click)="logOut()">Déconnexion</button> -->
+    <form (ngSubmit)="onSubmit()" [formGroup]="profileForm">
+      <mat-form-field>
+        <input id="username" matInput formControlName="username" />
+      </mat-form-field>
+      <mat-form-field>
+        <input id="email" matInput formControlName="email" />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          id="password"
+          matInput
+          type="password"
+          formControlName="password"
+        />
+      </mat-form-field>
+      <app-button
+        label="Sauvegarder"
+        type="submit"
+        [disabled]="profileForm.invalid"
+      ></app-button>
+    </form>
+    <button class="logout-button" (click)="logOut()">Se déconnecter</button>
   </div>
   <div>
     <h2>Abonnements</h2>

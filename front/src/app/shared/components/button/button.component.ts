@@ -10,6 +10,7 @@ export class ButtonComponent {
   @Input() label: string = '';
   @Input() type: 'button' | 'submit' = 'button';
   @Input() navigateTo?: string;
+  @Input() disabled: boolean = false;
 
   @Output() onClick = new EventEmitter<void>();
 

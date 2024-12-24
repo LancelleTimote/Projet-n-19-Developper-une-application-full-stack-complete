@@ -9,6 +9,7 @@ import com.mdd.repository.UserRepository;
 import com.mdd.exception.UserNotFoundException;
 import com.mdd.exception.TopicNotFoundException;
 import com.mdd.exception.AlreadySubscribedException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +50,7 @@ public class SubscriptionService {
         subscriptionRepository.save(subscription);
     }
 
+    @Transactional
     public void unsubscribeFromTopic(String email, Long topicId) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));

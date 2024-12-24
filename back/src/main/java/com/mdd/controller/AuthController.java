@@ -1,11 +1,14 @@
 package com.mdd.controller;
 
+import com.mdd.model.CustomUserDetails;
 import com.mdd.model.User;
 import com.mdd.service.UserService;
 import com.mdd.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static com.mdd.util.ValidationUtil.isValidPassword;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -16,11 +19,6 @@ public class AuthController {
 
     @Autowired
     private JwtUtil jwtUtil;
-
-    private boolean isValidPassword(String password) {
-        String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
-        return password != null && password.matches(passwordRegex);
-    }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
@@ -33,10 +31,13 @@ public class AuthController {
         }
 
         User registeredUser = userService.register(user);
-        final String jwtToken = jwtUtil.generateToken(userService.loadUserByUsername(user.getEmail()));
 
-        return ResponseEntity.ok(new AuthResponse(jwtToken));
+        CustomUserDetails userDetails = new CustomUserDetails(registeredUser);
+        final String jwtToken = jwtUtil.generateToken(userDetails);
+
+        return ResponseEntity.ok(new AuthResponse(jwtToken, registeredUser));
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
@@ -45,7 +46,9 @@ public class AuthController {
             return ResponseEntity.status(401).body("Invalid credentials");
         }
         final String jwtToken = jwtUtil.generateToken(userService.loadUserByUsername(user.getEmail()));
-        return ResponseEntity.ok(new AuthResponse(jwtToken));
+
+        AuthResponse response = new AuthResponse(jwtToken, loggedInUser);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/me")

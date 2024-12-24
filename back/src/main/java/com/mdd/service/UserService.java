@@ -57,4 +57,18 @@ public class UserService implements UserDetailsService {
                 .authorities("USER")
                 .build();
     }
+
+    public User updateUser(User updatedUser) {
+        User existingUser = userRepository.findByEmail(updatedUser.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        existingUser.setUsername(updatedUser.getUsername());
+        existingUser.setEmail(updatedUser.getEmail());
+
+        if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+            existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        }
+
+        return userRepository.save(existingUser);
+    }
 }

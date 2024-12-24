@@ -11,10 +11,8 @@ import java.util.List;
 
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
 
-    // Requête pour récupérer les abonnements avec les informations des topics
     @Query("SELECT s FROM Subscription s JOIN FETCH s.topic WHERE s.user = :user")
     List<Subscription> findByUser(@Param("user") User user);
-
     boolean existsByUserAndTopic(User user, Topic topic);
     void deleteByUserAndTopic(User user, Topic topic);
 }

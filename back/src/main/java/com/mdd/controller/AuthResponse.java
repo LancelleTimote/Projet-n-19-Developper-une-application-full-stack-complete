@@ -1,17 +1,15 @@
 package com.mdd.controller;
 
+import com.mdd.model.User;
+import lombok.Data;
+
+@Data
 public class AuthResponse {
     private String token;
+    private User user;
 
-    public AuthResponse(String token) {
+    public AuthResponse(String token, User user) {
         this.token = token;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
+        this.user = user;
     }
 }

@@ -46,13 +46,13 @@ public class SubscriptionController {
     }
 
     @DeleteMapping("/{topicId}")
-    public ResponseEntity<String> unsubscribeFromTopic(@PathVariable Long topicId) {
+    public ResponseEntity<Void> unsubscribeFromTopic(@PathVariable Long topicId) {
         String email = getAuthenticatedEmail();
         try {
             subscriptionService.unsubscribeFromTopic(email, topicId);
-            return new ResponseEntity<>("Successfully unsubscribed from topic", HttpStatus.OK);
+            return ResponseEntity.ok().build();
         } catch (UserNotFoundException | TopicNotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
