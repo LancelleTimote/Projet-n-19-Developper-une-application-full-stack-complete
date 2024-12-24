@@ -59,7 +59,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User updateUser(User updatedUser) {
-        User existingUser = userRepository.findByEmail(updatedUser.getEmail())
+        User existingUser = userRepository.findById(updatedUser.getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         existingUser.setUsername(updatedUser.getUsername());

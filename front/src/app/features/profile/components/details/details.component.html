@@ -1,8 +1,12 @@
 <app-header></app-header>
-<div>
-  <div>
+<div class="profile">
+  <div class="profile-infos">
     <h2>Profil utilisateur</h2>
-    <form (ngSubmit)="onSubmit()" [formGroup]="profileForm">
+    <form
+      class="profile-infos-form"
+      (ngSubmit)="onSubmit()"
+      [formGroup]="profileForm"
+    >
       <mat-form-field>
         <input id="username" matInput formControlName="username" />
       </mat-form-field>
@@ -25,20 +29,27 @@
     </form>
     <button class="logout-button" (click)="logOut()">Se déconnecter</button>
   </div>
-  <div>
+  <div class="profile-subscriptions">
     <h2>Abonnements</h2>
-    <div *ngIf="subscriptions.length === 0">Aucun abonnement.</div>
-
-    <div *ngFor="let subscription of subscriptions">
-      <div class="subscription-card">
-        <h3>{{ subscription.topicTitle }}</h3>
-        <p>{{ subscription.topicDescription }}</p>
-        <button
-          (click)="unsubscribe(subscription.topicId)"
-          class="unsubscribe-button"
-        >
-          Se désabonner
-        </button>
+    <div class="profile-subscriptions-grid">
+      <div *ngIf="subscriptions.length === 0">Aucun abonnement</div>
+      <div *ngFor="let subscription of subscriptions" class="subscription-card">
+        <div class="subscription-card-header">
+          <h2>{{ subscription.topicTitle }}</h2>
+        </div>
+        <div class="subscription-card-content">
+          <p>{{ subscription.topicDescription }}</p>
+        </div>
+        <div class="subscription-card-action">
+          <app-button
+            label="Se désabonner"
+            type="button"
+            (onclick)="unsubscribe(subscription.topicId)"
+          ></app-button>
+          <button (click)="unsubscribe(subscription.topicId)">
+            Se désabonner
+          </button>
+        </div>
       </div>
     </div>
   </div>

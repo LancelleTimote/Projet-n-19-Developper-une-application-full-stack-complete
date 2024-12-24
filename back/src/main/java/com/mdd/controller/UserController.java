@@ -38,17 +38,14 @@ public class UserController {
         try {
             User existingUser = userService.getUserById(updatedUser.getId());
 
-            // Update username if needed
             if (updatedUser.getUsername() != null && !updatedUser.getUsername().isEmpty()) {
                 existingUser.setUsername(updatedUser.getUsername());
             }
 
-            // Update email if needed
             if (updatedUser.getEmail() != null && !updatedUser.getEmail().isEmpty()) {
                 existingUser.setEmail(updatedUser.getEmail());
             }
 
-            // Update password if needed
             if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
                 if (!ValidationUtil.isValidPassword(updatedUser.getPassword())) {
                     return ResponseEntity.badRequest().body("Invalid password format...");
@@ -56,7 +53,6 @@ public class UserController {
                 existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
             }
 
-            // Save updated user
             User updated = userService.updateUser(existingUser);
             return ResponseEntity.ok(updated);
         } catch (UserNotFoundException e) {

@@ -114,6 +114,9 @@ export class DetailsComponent implements OnInit {
       next: (response) => {
         console.log('Profile updated successfully:', response);
         alert('Profile updated!');
+
+        const updatedUserData = { ...currentUser, ...updatedData };
+        localStorage.setItem('currentUser', JSON.stringify(updatedUserData));
       },
       error: (error) => {
         console.error('Error updating profile:', error);

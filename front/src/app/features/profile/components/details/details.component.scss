@@ -1,20 +1,93 @@
-.subscription-card {
-  border: 1px solid #ddd;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  background-color: #f9f9f9;
+.profile {
+  width: 100%;
+  &-infos {
+    border-bottom: solid 1px black;
+    width: 95%;
+    h2 {
+      margin: 20px 0 0 0;
+      font-weight: bold;
+    }
+    &-form {
+      width: 100%;
+      max-width: 400px;
+      mat-form-field {
+        width: 100%;
+        .mat-form-field-infix {
+          padding: 0;
+          border: 0;
+        }
+      }
+      input {
+        border: 1px solid rgba(119, 99, 197, 1);
+        padding: 10px;
+        border-radius: 8px;
+      }
+    }
+    .logout-button {
+      border: none;
+      background-color: white;
+      color: rgba(164, 15, 15, 1);
+      font-size: 14px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+  }
+  &-subscriptions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 20px;
+    &-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      width: 100%;
+      max-width: 1200px;
+      .subscription-card {
+        background-color: #f5f5f5;
+        border-radius: 8px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        &-header {
+          text-align: left;
+          margin-bottom: 10px;
+          h2 {
+            font-size: 16px;
+          }
+        }
+        &-content {
+          flex-grow: 1;
+          font-size: 14px;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 3;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        &-action {
+          display: flex;
+          justify-content: center;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
 }
 
-.unsubscribe-button {
-  background-color: #ff4c4c;
-  color: white;
-  padding: 5px 10px;
-  border: none;
-  cursor: pointer;
-  border-radius: 3px;
+.profile,
+.profile-infos,
+.profile-infos-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
-.unsubscribe-button:hover {
-  background-color: #e04343;
+::ng-deep .profile-infos-form .mat-form-field-underline {
+  display: none !important;
 }

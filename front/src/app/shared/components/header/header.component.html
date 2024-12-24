@@ -6,8 +6,8 @@
     routerLink="/"
   />
   <div class="header-links" *ngIf="isAuthenticated">
-    <a routerLink="/posts">Articles</a>
-    <a routerLink="/topics">Thèmes</a>
+    <a routerLink="/posts" routerLinkActive="active-link">Articles</a>
+    <a routerLink="/topics" routerLinkActive="active-link">Thèmes</a>
     <div class="profile-icon" (click)="goToProfile()">
       <mat-icon>account_circle</mat-icon>
     </div>

@@ -21,10 +21,8 @@ export class AuthService {
         tap((response) => {
           console.log('Register response:', response);
 
-          // Stockage du token dans le localStorage
           localStorage.setItem('token', response.token);
 
-          // Stockage de l'utilisateur dans le localStorage
           if (response.user) {
             localStorage.setItem('currentUser', JSON.stringify(response.user));
           } else {
