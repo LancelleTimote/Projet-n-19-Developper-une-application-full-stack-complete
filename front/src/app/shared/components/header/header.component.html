@@ -5,11 +5,36 @@
     class="header-logo"
     routerLink="/"
   />
-  <div class="header-links" *ngIf="isAuthenticated">
+  <div class="header-links" *ngIf="isAuthenticated && !isMobileView">
     <a routerLink="/posts" routerLinkActive="active-link">Articles</a>
     <a routerLink="/topics" routerLinkActive="active-link">Thèmes</a>
     <div class="profile-icon" (click)="goToProfile()">
       <mat-icon>account_circle</mat-icon>
+    </div>
+  </div>
+
+  <div class="mobile-menu" *ngIf="isMobileView && isAuthenticated">
+    <mat-icon (click)="openMenu()">menu</mat-icon>
+  </div>
+
+  <div class="fullscreen-menu" *ngIf="menuOpen">
+    <div class="overlay" (click)="closeMenu()"></div>
+    <div class="menu-content">
+      <a
+        routerLink="/posts"
+        routerLinkActive="active-link"
+        (click)="closeMenu()"
+        >Articles</a
+      >
+      <a
+        routerLink="/topics"
+        routerLinkActive="active-link"
+        (click)="closeMenu()"
+        >Thèmes</a
+      >
+      <div class="profile-icon" (click)="goToProfile(); closeMenu()">
+        <mat-icon>account_circle</mat-icon>
+      </div>
     </div>
   </div>
 </div>

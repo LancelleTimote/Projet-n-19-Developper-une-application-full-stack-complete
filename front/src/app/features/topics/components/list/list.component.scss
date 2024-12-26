@@ -11,6 +11,7 @@
     gap: 16px;
     width: 100%;
     max-width: 1200px;
+    padding: 0 20px;
   }
 
   .topic-card {
@@ -51,6 +52,7 @@
   .topic-grid {
     grid-template-columns: 1fr !important;
     gap: 12px !important;
+    padding: 0 !important;
   }
 
   .topic-card {
