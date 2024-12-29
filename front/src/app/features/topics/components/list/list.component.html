@@ -10,7 +10,8 @@
       </div>
       <div class="topic-card-actions">
         <app-button
-          label="S'abonner"
+          [label]="topic.isSubscribed ? 'Abonné' : 'S\'abonner'"
+          [disabled]="topic.isSubscribed"
           type="button"
           (onClick)="subscribe(topic.id)"
         ></app-button>

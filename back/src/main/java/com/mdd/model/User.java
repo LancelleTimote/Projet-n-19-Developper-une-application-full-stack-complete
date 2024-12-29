@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -38,4 +39,8 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Subscription> subscriptions;
+
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Post> posts;
 }

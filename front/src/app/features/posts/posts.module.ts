@@ -15,6 +15,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 registerLocaleData(localeFr);
 
 const materialModules = [
@@ -24,6 +26,8 @@ const materialModules = [
   MatIconModule,
   MatInputModule,
   MatSnackBarModule,
+  MatSelectModule,
+  MatOptionModule,
 ];
 
 @NgModule({

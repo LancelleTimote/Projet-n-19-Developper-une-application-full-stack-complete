@@ -51,4 +51,9 @@ export class AuthService {
   me(): Observable<User> {
     return this.httpClient.get<User>(`${this.pathService}/me`);
   }
+
+  get currentUser(): User | null {
+    const user = localStorage.getItem('currentUser');
+    return user ? JSON.parse(user) : null;
+  }
 }

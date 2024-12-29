@@ -13,8 +13,22 @@ export class ListComponent implements OnInit {
 
   ngOnInit(): void {
     this.topicsService.getTopics().subscribe(
-      (data) => {
-        this.topics = data;
+      (topics) => {
+        this.topicsService.getUserSubscriptions().subscribe(
+          (subscriptions) => {
+            this.topics = topics.map((topic) => ({
+              ...topic,
+              isSubscribed: subscriptions.includes(topic.id),
+            }));
+          },
+          (error) => {
+            console.error('Erreur de récupération des abonnements', error);
+            this.topics = topics.map((topic) => ({
+              ...topic,
+              isSubscribed: false,
+            }));
+          }
+        );
       },
       (error) => {
         console.error('Erreur de récupération des topics', error);
@@ -23,9 +37,13 @@ export class ListComponent implements OnInit {
   }
 
   subscribe(topicId: number): void {
+    const topic = this.topics.find((t) => t.id === topicId);
+    if (!topic) return;
+
     this.topicsService.subscribeToTopic(topicId).subscribe(
       (response) => {
         console.log('Abonnement réussi :', response);
+        topic.isSubscribed = true;
       },
       (error) => {
         console.error("Erreur lors de l'abonnement", error);

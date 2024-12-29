@@ -41,4 +41,14 @@ export class TopicsService {
         })
       );
   }
+
+  getUserSubscriptions(): Observable<number[]> {
+    return this.http.get<any[]>(`${this.subscriptionApiUrl}`).pipe(
+      map((subscriptions) => subscriptions.map((sub) => sub.topicId)),
+      catchError((error) => {
+        console.error('Erreur dans getUserSubscriptions:', error);
+        return throwError(error);
+      })
+    );
+  }
 }

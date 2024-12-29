@@ -10,6 +10,7 @@ import { PostsResponse } from '../interfaces/api/postsResponse.interface';
 })
 export class PostsService {
   private pathService = 'api/posts';
+  private topicsService = 'api/topics';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -21,7 +22,13 @@ export class PostsService {
     return this.httpClient.get<Post>(`${this.pathService}/${id}`);
   }
 
-  public create(form: FormData): Observable<PostResponse> {
-    return this.httpClient.post<PostResponse>(this.pathService, form);
+  create(payload: any): Observable<any> {
+    return this.httpClient.post<any>('/api/posts', payload); // Envoi en JSON
+  }
+
+  public getTopics(): Observable<{ id: number; name: string }[]> {
+    return this.httpClient.get<{ id: number; name: string }[]>(
+      this.topicsService
+    );
   }
 }
