@@ -14,8 +14,8 @@ export class PostsService {
 
   constructor(private httpClient: HttpClient) {}
 
-  public all(): Observable<PostsResponse> {
-    return this.httpClient.get<PostsResponse>(this.pathService);
+  public all(): Observable<Post[]> {
+    return this.httpClient.get<Post[]>(this.pathService);
   }
 
   public details(id: string): Observable<Post> {
@@ -23,7 +23,7 @@ export class PostsService {
   }
 
   create(payload: any): Observable<any> {
-    return this.httpClient.post<any>('/api/posts', payload); // Envoi en JSON
+    return this.httpClient.post<any>('/api/posts', payload);
   }
 
   public getTopics(): Observable<{ id: number; name: string }[]> {

@@ -1,5 +1,6 @@
 package com.mdd.controller;
 
+import com.mdd.dto.PostDto;
 import com.mdd.model.Post;
 import com.mdd.model.User;
 import com.mdd.repository.UserRepository;
@@ -24,7 +25,7 @@ public class PostController {
     }
 
     @GetMapping
-    public List<Post> getAllPosts() {
+    public List<PostDto> getAllPosts() {
         return postService.getAllPosts();
     }
 

@@ -29,7 +29,7 @@ export class DetailsComponent implements OnInit {
     this.profileForm = this.formBuilder.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', passwordValidator], // Optional or conditional validation
+      password: ['', passwordValidator],
     });
   }
 
@@ -69,7 +69,7 @@ export class DetailsComponent implements OnInit {
         this.profileForm.patchValue({
           username: user.username,
           email: user.email,
-          password: '', // Do not expose the password for update
+          password: '',
         });
 
         this.profileForm.addControl('id', this.formBuilder.control(user.id));

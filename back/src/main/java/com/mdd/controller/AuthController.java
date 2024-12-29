@@ -4,11 +4,10 @@ import com.mdd.model.CustomUserDetails;
 import com.mdd.model.User;
 import com.mdd.service.UserService;
 import com.mdd.util.JwtUtil;
+import com.mdd.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import static com.mdd.util.ValidationUtil.isValidPassword;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -26,7 +25,11 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Invalid input");
         }
 
-        if (!isValidPassword(user.getPassword())) {
+        if (!ValidationUtil.isValidEmail(user.getEmail())) {
+            return ResponseEntity.badRequest().body("Email format is invalid.");
+        }
+
+        if (!ValidationUtil.isValidPassword(user.getPassword())) {
             return ResponseEntity.badRequest().body("Invalid password format. Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a digit, and a special character.");
         }
 

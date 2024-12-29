@@ -16,3 +16,9 @@
     color: rgba(119, 99, 197, 1);
   }
 }
+
+@media (max-width: 425px) {
+  .back-button {
+    margin: 10px 0;
+  }
+}

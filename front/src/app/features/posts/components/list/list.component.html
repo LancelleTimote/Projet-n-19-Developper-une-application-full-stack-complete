@@ -1,2 +1,33 @@
 <app-header></app-header>
-<app-button label="Créer un article" navigateTo="/posts/create"></app-button>
+<div class="post-list">
+  <div>
+    <div class="post-buttons">
+      <app-button
+        label="Créer un article"
+        navigateTo="/posts/create"
+      ></app-button>
+      <button class="button-sort">
+        <span>Trier par</span>
+        <mat-icon>arrow_downward</mat-icon>
+      </button>
+    </div>
+    <div class="post-grid">
+      <div
+        *ngFor="let post of posts"
+        class="post-card"
+        [routerLink]="['/posts/details', post.id]"
+      >
+        <div class="post-card-header">
+          <h2>{{ post.title }}</h2>
+        </div>
+        <div class="post-card-infos">
+          <span>{{ post.createdAt | date : "dd/MM/yyyy HH:mm" }}</span>
+          <span class="post-card-infos-author">{{ post.authorUsername }}</span>
+        </div>
+        <div class="post-card-content">
+          <p>{{ post.content }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

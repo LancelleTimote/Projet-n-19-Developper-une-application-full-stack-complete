@@ -123,6 +123,9 @@
 }
 
 @media (max-width: 425px) {
+  .header {
+    padding: 10px;
+  }
   .header-links {
     display: none;
   }

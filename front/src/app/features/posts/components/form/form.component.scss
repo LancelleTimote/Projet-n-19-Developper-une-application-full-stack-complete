@@ -20,6 +20,10 @@
       padding: 10px;
       border-radius: 8px;
     }
+    ::ng-deep .mat-form-field-label {
+      height: 60%;
+      padding: 10px;
+    }
   }
 }
 
@@ -34,11 +38,6 @@
 
 ::ng-deep .post-create_form .mat-form-field-underline {
   display: none !important;
-}
-
-::ng-deep .mat-form-field-label {
-  height: 60%;
-  padding: 10px;
 }
 
 @media (max-width: 425px) {
