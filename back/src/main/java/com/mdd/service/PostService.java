@@ -23,13 +23,16 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    private PostDto convertToDto(Post post) {
+    public PostDto convertToDto(Post post) {
+        String authorUsername = post.getAuthor() != null ? post.getAuthor().getUsername() : "Utilisateur inconnu";
+        String topicName = post.getTopic() != null ? post.getTopic().getName() : "Article inconnu";
+
         return new PostDto(
                 post.getId(),
                 post.getTitle(),
                 post.getContent(),
-                post.getAuthor().getUsername(),
-                post.getTopic().getName(),
+                authorUsername,
+                topicName,
                 post.getCreatedAt()
         );
     }

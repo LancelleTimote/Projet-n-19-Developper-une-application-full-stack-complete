@@ -1,3 +1,45 @@
 <app-header></app-header>
 <app-back-button></app-back-button>
-<div></div>
+<div>
+  <div class="post-details" *ngIf="post">
+    <h2>{{ post.title }}</h2>
+    <div>
+      <span>{{ post.createdAt | date : "dd/MM/yyyy HH:mm" }}</span>
+      <span>{{ post.authorUsername }}</span>
+      <span>{{ post.topicName }}</span>
+    </div>
+    <p>{{ post.content }}</p>
+  </div>
+  <div>
+    <h2>Commentaires</h2>
+    <div *ngIf="comments.length > 0">
+      <div *ngFor="let comment of comments" class="comment">
+        <p>
+          <strong>{{ comment.username }}</strong> -
+          {{ comment.createdAt | date : "dd/MM/yyyy HH:mm" }}
+        </p>
+        <p>{{ comment.content }}</p>
+      </div>
+    </div>
+    <p *ngIf="comments.length === 0">Aucun commentaire pour cet article.</p>
+    <form class="post-create_form" [formGroup]="form" (ngSubmit)="submit()">
+      <mat-form-field>
+        <textarea
+          id="content"
+          matInput
+          formControlName="content"
+          placeholder="Écrivez ici votre commentaire"
+          rows="5"
+          cols="30"
+        ></textarea>
+        <mat-error *ngIf="form.controls['content'].hasError('required')">
+          Le commentaire ne peut pas être vide.
+        </mat-error>
+        <mat-error *ngIf="form.controls['content'].hasError('minlength')">
+          Le commentaire doit contenir au moins 5 caractères.
+        </mat-error>
+      </mat-form-field>
+      <button type="submit"><mat-icon>send</mat-icon></button>
+    </form>
+  </div>
+</div>

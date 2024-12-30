@@ -30,9 +30,9 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Post> getPostById(@PathVariable Long id) {
+    public ResponseEntity<PostDto> getPostById(@PathVariable Long id) {
         return postService.getPostById(id)
-                .map(ResponseEntity::ok)
+                .map(post -> ResponseEntity.ok(postService.convertToDto(post)))
                 .orElse(ResponseEntity.notFound().build());
     }
 

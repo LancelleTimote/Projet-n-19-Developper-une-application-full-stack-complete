@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Post } from 'src/app/features/posts/interfaces/post.interface';
-import { PostResponse } from '../interfaces/api/postResponse.interface';
-import { PostsResponse } from '../interfaces/api/postsResponse.interface';
+import { Post } from '../interfaces/post.interface';
+import { Comment } from '../interfaces/comment.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -30,5 +29,17 @@ export class PostsService {
     return this.httpClient.get<{ id: number; name: string }[]>(
       this.topicsService
     );
+  }
+
+  public getComments(postId: number): Observable<Comment[]> {
+    return this.httpClient.get<Comment[]>(`/api/comments/post/${postId}`);
+  }
+
+  createComment(comment: {
+    content: string;
+    post: { id: number };
+    user: { id: number };
+  }): Observable<Comment> {
+    return this.httpClient.post<Comment>('/api/comments', comment);
   }
 }
