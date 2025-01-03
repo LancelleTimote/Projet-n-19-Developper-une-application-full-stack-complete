@@ -39,16 +39,22 @@ public class UserController {
             User existingUser = userService.getUserById(updatedUser.getId());
 
             if (updatedUser.getUsername() != null && !updatedUser.getUsername().isEmpty()) {
+                if (!ValidationUtil.isValidUsername(updatedUser.getUsername())) {
+                    return ResponseEntity.badRequest().body("Invalid username format");
+                }
                 existingUser.setUsername(updatedUser.getUsername());
             }
 
             if (updatedUser.getEmail() != null && !updatedUser.getEmail().isEmpty()) {
+                if (!ValidationUtil.isValidEmail(updatedUser.getEmail())) {
+                    return ResponseEntity.badRequest().body("Invalid email format");
+                }
                 existingUser.setEmail(updatedUser.getEmail());
             }
 
             if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
                 if (!ValidationUtil.isValidPassword(updatedUser.getPassword())) {
-                    return ResponseEntity.badRequest().body("Invalid password format...");
+                    return ResponseEntity.badRequest().body("Invalid password format");
                 }
                 existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
             }

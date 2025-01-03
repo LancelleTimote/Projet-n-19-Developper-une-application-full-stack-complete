@@ -3,6 +3,7 @@ package com.mdd.service;
 import com.mdd.exception.UserNotFoundException;
 import com.mdd.model.User;
 import com.mdd.repository.UserRepository;
+import com.mdd.util.ValidationUtil;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -59,6 +60,16 @@ public class UserService implements UserDetailsService {
     }
 
     public User updateUser(User updatedUser) {
+        if (updatedUser.getUsername() != null && !ValidationUtil.isValidUsername(updatedUser.getUsername())) {
+            throw new IllegalArgumentException("Invalid username format");
+        }
+        if (updatedUser.getEmail() != null && !ValidationUtil.isValidEmail(updatedUser.getEmail())) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+        if (updatedUser.getPassword() != null && !ValidationUtil.isValidPassword(updatedUser.getPassword())) {
+            throw new IllegalArgumentException("Invalid password format");
+        }
+
         User existingUser = userRepository.findById(updatedUser.getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 

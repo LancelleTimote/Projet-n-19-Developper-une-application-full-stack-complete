@@ -12,6 +12,6 @@ public class ValidationUtil {
     }
 
     public static boolean isValidUsername(String username) {
-        return username != null && username.matches("^[a-zA-Z0-9]{1,12}$");
+        return username != null && username.matches("^[a-zA-Z0-9]{3,12}$");
     }
 }

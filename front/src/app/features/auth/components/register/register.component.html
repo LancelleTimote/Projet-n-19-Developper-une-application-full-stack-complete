@@ -12,7 +12,7 @@
         <mat-form-field>
           <input id="username" matInput formControlName="username" />
           <mat-error *ngIf="form.get('username')?.hasError('invalidUsername')">
-            Le nom d'utilisateur doit contenir uniquement des lettres et des chiffres, et ne pas dépasser 12 caractères.
+            Le nom d'utilisateur doit contenir uniquement des lettres et des chiffres, et faire entre 3 et 12 caractères.
           </mat-error>
         </mat-form-field>
       </div>

@@ -5,6 +5,7 @@ import { DetailsService } from '../../services/details.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/features/auth/services/auth.service';
 import { passwordValidator } from 'src/app/validators/password.validator';
+import { usernameValidator } from '../../../../validators/username.validator';
 
 @Component({
   selector: 'app-details',
@@ -27,7 +28,7 @@ export class DetailsComponent implements OnInit {
     private authService: AuthService
   ) {
     this.profileForm = this.formBuilder.group({
-      username: ['', Validators.required],
+      username: ['', [Validators.required, usernameValidator]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', passwordValidator],
     });
@@ -64,19 +65,19 @@ export class DetailsComponent implements OnInit {
 
   loadUserProfile(): void {
     this.detailsService.getProfile().subscribe({
-      next: (user) => {
-        console.log('User profile loaded:', user);
-        this.profileForm.patchValue({
-          username: user.username,
-          email: user.email,
-          password: '',
-        });
+        next: (user) => {
+            this.profileForm.patchValue({
+                username: user.username,
+                email: user.email,
+                password: '',
+            });
+            console.log(this.profileForm.value);
 
-        this.profileForm.addControl('id', this.formBuilder.control(user.id));
-      },
-      error: (err) => {
-        console.error('Error loading profile:', err);
-      },
+            this.profileForm.addControl('id', this.formBuilder.control(user.id));
+        },
+        error: (err) => {
+            console.error('Error loading profile:', err);
+        },
     });
   }
 
