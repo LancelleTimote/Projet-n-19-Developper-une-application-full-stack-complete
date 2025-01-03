@@ -8,6 +8,7 @@ import { AuthSuccess } from '../../interfaces/authSuccess.interface';
 import { User } from 'src/app/interfaces/user.interface';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { passwordValidator } from '../../../../validators/password.validator';
+import { usernameValidator } from '../../../../validators/username.validator';
 
 @Component({
   selector: 'app-register',
@@ -22,7 +23,7 @@ export class RegisterComponent {
 
   public form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    username: ['', [Validators.required, Validators.min(3)]],
+    username: ['', [Validators.required, usernameValidator]],
     password: ['', [Validators.required, passwordValidator]],
   });
 

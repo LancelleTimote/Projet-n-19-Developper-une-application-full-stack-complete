@@ -11,10 +11,13 @@
         <label for="username">Nom d'utilisateur</label>
         <mat-form-field>
           <input id="username" matInput formControlName="username" />
+          <mat-error *ngIf="form.get('username')?.hasError('invalidUsername')">
+            Le nom d'utilisateur doit contenir uniquement des lettres et des chiffres, et ne pas dépasser 12 caractères.
+          </mat-error>
         </mat-form-field>
       </div>
       <div class="form-group">
-        <label for="email">Adresse e-mail</label>
+        <label for="email">Adresse email</label>
         <mat-form-field>
           <input id="email" matInput formControlName="email" type="email" />
           <mat-error *ngIf="form.get('email')?.hasError('required')">
@@ -34,11 +37,11 @@
             [type]="hide ? 'password' : 'text'"
             formControlName="password"
           />
+          <mat-error *ngIf="form.get('password')?.hasError('invalidPassword')">
+            Le mot de passe doit contenir au moins 8 caractères, une majuscule,
+            une minuscule, un chiffre, et un caractère spécial.
+          </mat-error>
         </mat-form-field>
-        <mat-error *ngIf="form.get('password')?.hasError('invalidPassword')">
-          Le mot de passe doit contenir au moins 8 caractères, une majuscule,
-          une minuscule, un chiffre, et un caractère spécial.
-        </mat-error>
       </div>
     </mat-card-content>
     <app-button label="S'inscrire" type="submit"></app-button>

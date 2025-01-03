@@ -21,7 +21,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
-        if (user.getEmail() == null || user.getPassword() == null) {
+        if (user.getEmail() == null || user.getPassword() == null || user.getUsername() == null) {
             return ResponseEntity.badRequest().body("Invalid input");
         }
 
@@ -33,6 +33,10 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Invalid password format. Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a digit, and a special character.");
         }
 
+        if (!ValidationUtil.isValidUsername(user.getUsername())) {
+            return ResponseEntity.badRequest().body("Invalid username format. Only letters and numbers are allowed, and the length must not exceed 12 characters.");
+        }
+
         User registeredUser = userService.register(user);
 
         CustomUserDetails userDetails = new CustomUserDetails(registeredUser);
@@ -40,7 +44,6 @@ public class AuthController {
 
         return ResponseEntity.ok(new AuthResponse(jwtToken, registeredUser));
     }
-
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {

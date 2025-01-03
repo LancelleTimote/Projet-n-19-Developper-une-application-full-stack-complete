@@ -10,4 +10,8 @@ public class ValidationUtil {
         String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
         return email != null && email.matches(emailRegex);
     }
+
+    public static boolean isValidUsername(String username) {
+        return username != null && username.matches("^[a-zA-Z0-9]{1,12}$");
+    }
 }
