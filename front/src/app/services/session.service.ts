@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AuthService } from '../features/auth/services/auth.service';
-import { User } from '../interfaces/user.interface';
+import { UserDto } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -9,13 +9,13 @@ import { User } from '../interfaces/user.interface';
 export class SessionService {
   private isLoggedSubject = new BehaviorSubject<boolean>(false);
   public isLogged = false;
-  public user: User | undefined;
+  public user: UserDto | undefined;
 
   public $isLogged(): Observable<boolean> {
     return this.isLoggedSubject.asObservable();
   }
 
-  logIn(user: User): void {
+  logIn(user: UserDto): void {
     this.user = user;
     this.isLogged = true;
     this.next();

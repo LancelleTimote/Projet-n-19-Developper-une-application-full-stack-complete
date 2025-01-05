@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from 'src/app/interfaces/user.interface';
+import { UserDto } from 'src/app/interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -32,15 +32,15 @@ export class DetailsService {
     return this.http.delete<void>(`${this.subscriptionApiUrl}/${topicId}`);
   }
 
-  getProfile(): Observable<User> {
-    return this.http.get<User>('/api/auth/me');
+  getProfile(): Observable<UserDto> {
+    return this.http.get<UserDto>('/api/user/me');
   }
 
   updateProfile(user: {
     username: string;
     email: string;
     password?: string;
-  }): Observable<User> {
-    return this.http.put<User>(`${this.profileApiUrl}/update`, user);
+  }): Observable<UserDto> {
+    return this.http.put<UserDto>(`${this.profileApiUrl}/update`, user);
   }
 }

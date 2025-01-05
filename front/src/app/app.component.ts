@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './features/auth/services/auth.service';
-import { User } from './interfaces/user.interface';
+import { UserDto } from './interfaces/user.interface';
 import { SessionService } from './services/session.service';
 
 @Component({
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
 
   public autoLog(): void {
     this.authService.me().subscribe(
-      (user: User) => {
+      (user: UserDto) => {
         this.sessionService.logIn(user);
       },
       (_) => {

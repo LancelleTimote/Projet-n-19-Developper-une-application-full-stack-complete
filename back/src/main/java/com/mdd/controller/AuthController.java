@@ -1,5 +1,6 @@
 package com.mdd.controller;
 
+import com.mdd.dto.UserDto;
 import com.mdd.model.CustomUserDetails;
 import com.mdd.model.User;
 import com.mdd.service.UserService;
@@ -40,9 +41,12 @@ public class AuthController {
         User registeredUser = userService.register(user);
 
         CustomUserDetails userDetails = new CustomUserDetails(registeredUser);
+
         final String jwtToken = jwtUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new AuthResponse(jwtToken, registeredUser));
+        UserDto userDto = new UserDto(registeredUser.getId(), registeredUser.getUsername(), registeredUser.getEmail(), null);
+
+        return ResponseEntity.ok(new AuthResponse(jwtToken, userDto));
     }
 
     @PostMapping("/login")
@@ -51,24 +55,13 @@ public class AuthController {
         if (loggedInUser == null) {
             return ResponseEntity.status(401).body("Invalid credentials");
         }
+
         final String jwtToken = jwtUtil.generateToken(userService.loadUserByUsername(user.getEmail()));
 
-        AuthResponse response = new AuthResponse(jwtToken, loggedInUser);
+        UserDto userDto = new UserDto(loggedInUser.getId(), loggedInUser.getUsername(), loggedInUser.getEmail(), null);
+
+        AuthResponse response = new AuthResponse(jwtToken, userDto);
+
         return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/me")
-    public ResponseEntity<?> getProfile(@RequestHeader("Authorization") String authHeader) {
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.status(401).body("Unauthorized");
-        }
-        String token = authHeader.substring(7);
-        String email = jwtUtil.extractUsername(token);
-
-        User user = userService.getUserByEmail(email);
-        if (user == null) {
-            return ResponseEntity.status(401).body("Unauthorized");
-        }
-        return ResponseEntity.ok(user);
     }
 }

@@ -28,8 +28,8 @@ export class DetailsComponent implements OnInit {
     private authService: AuthService
   ) {
     this.profileForm = this.formBuilder.group({
-      username: ['', [Validators.required, usernameValidator]],
-      email: ['', [Validators.required, Validators.email]],
+      username: ['', [usernameValidator]],
+      email: ['', [Validators.email]],
       password: ['', passwordValidator],
     });
   }
@@ -65,69 +65,75 @@ export class DetailsComponent implements OnInit {
 
   loadUserProfile(): void {
     this.detailsService.getProfile().subscribe({
-        next: (user) => {
-            this.profileForm.patchValue({
-                username: user.username,
-                email: user.email,
-                password: '',
-            });
-            console.log(this.profileForm.value);
+      next: (user) => {
+        this.profileForm.patchValue({
+          username: user.username,
+          email: user.email,
+          password: '',
+        });
+        console.log(this.profileForm.value);
 
-            this.profileForm.addControl('id', this.formBuilder.control(user.id));
-        },
-        error: (err) => {
-            console.error('Error loading profile:', err);
-        },
+        this.profileForm.addControl('id', this.formBuilder.control(user.id));
+      },
+      error: (err) => {
+        console.error('Error loading profile:', err);
+      },
     });
+  }
+
+  isFormModified(): boolean {
+    const currentUser = this.sessionService.getCurrentUser();
+
+    const usernameChanged =
+      this.profileForm.get('username')?.value !== currentUser.username;
+    const emailChanged =
+      this.profileForm.get('email')?.value !== currentUser.email;
+    const passwordChanged =
+      this.profileForm.get('password')?.value &&
+      this.profileForm.get('password')?.value.trim() !== '';
+
+    return usernameChanged || emailChanged || passwordChanged;
   }
 
   onSubmit(): void {
     const updatedUser = this.profileForm.value;
     const currentUser = this.sessionService.getCurrentUser();
 
-    if (!updatedUser.id) {
-      console.error('User ID missing');
-      return;
-    }
+    const updatedData: any = { id: currentUser.id };
 
-    const updatedData: any = {
-      id: updatedUser.id,
-    };
-
-    if (updatedUser.username !== currentUser.username) {
+    if (updatedUser.username && updatedUser.username !== currentUser.username) {
       updatedData.username = updatedUser.username;
     }
 
-    if (updatedUser.email !== currentUser.email) {
+    if (updatedUser.email && updatedUser.email !== currentUser.email) {
       updatedData.email = updatedUser.email;
     }
 
-    if (updatedUser.password && updatedUser.password !== '') {
+    if (updatedUser.password && updatedUser.password.trim() !== '') {
       updatedData.password = updatedUser.password;
     }
 
-    if (Object.keys(updatedData).length === 0) {
-      alert('No changes detected.');
+    if (Object.keys(updatedData).length === 1) {
+      alert('Aucune modification détectée.');
       return;
     }
 
     this.detailsService.updateProfile(updatedData).subscribe({
       next: (response) => {
-        console.log('Profile updated successfully:', response);
-        alert('Profile updated!');
-
-        const updatedUserData = { ...currentUser, ...updatedData };
-        localStorage.setItem('currentUser', JSON.stringify(updatedUserData));
+        alert('Profil mis à jour avec succès !');
+        localStorage.setItem(
+          'currentUser',
+          JSON.stringify({ ...currentUser, ...updatedData })
+        );
       },
       error: (error) => {
-        console.error('Error updating profile:', error);
-        alert(`Failed to update profile. Error: ${error.error}`);
+        alert(`Erreur lors de la mise à jour : ${error.error}`);
       },
     });
   }
 
   logOut(): void {
     this.sessionService.logOut();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
   }
 }

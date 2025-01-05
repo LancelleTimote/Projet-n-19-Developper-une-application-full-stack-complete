@@ -9,19 +9,22 @@
     >
       <mat-form-field>
         <input id="username" matInput formControlName="username" />
-        <mat-error *ngIf="profileForm.get('username')?.hasError('invalidUsername')">
-          Le nom d'utilisateur doit contenir uniquement des lettres et des chiffres, et faire entre 3 et 12 caractères.
+        <mat-error
+          *ngIf="profileForm.get('username')?.hasError('invalidUsername')"
+        >
+          Le nom d'utilisateur doit contenir uniquement des lettres et des
+          chiffres, et faire entre 3 et 12 caractères.
         </mat-error>
       </mat-form-field>
       <mat-form-field>
         <input id="email" matInput formControlName="email" />
         <mat-error *ngIf="profileForm.get('email')?.hasError('required')">
-            L'email est requis.
+          L'email est requis.
         </mat-error>
         <mat-error *ngIf="profileForm.get('email')?.hasError('email')">
-            Entrez un email valide.
+          Entrez un email valide.
         </mat-error>
-    </mat-form-field>
+      </mat-form-field>
       <mat-form-field>
         <input
           id="password"
@@ -30,14 +33,17 @@
           formControlName="password"
           placeholder="Nouveau mot de passe"
         />
-        <mat-error *ngIf="profileForm.get('password')?.hasError('invalidPassword')">
-          Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre, et un caractère spécial.
+        <mat-error
+          *ngIf="profileForm.get('password')?.hasError('invalidPassword')"
+        >
+          Le mot de passe doit contenir au moins 8 caractères, une majuscule,
+          une minuscule, un chiffre, et un caractère spécial.
         </mat-error>
       </mat-form-field>
       <app-button
         label="Sauvegarder"
         type="submit"
-        [disabled]="profileForm.invalid"
+        [disabled]="!isFormModified()"
       ></app-button>
     </form>
     <button class="logout-button" (click)="logOut()">Se déconnecter</button>

@@ -1,12 +1,15 @@
 package com.mdd.controller;
 
+import com.mdd.dto.UserDto;
 import com.mdd.exception.UserNotFoundException;
+import com.mdd.model.CustomUserDetails;
 import com.mdd.model.User;
 import com.mdd.service.UserService;
 import com.mdd.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,41 +33,42 @@ public class UserController {
         }
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<UserDto> getProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        User user = userService.getUserByEmail(userDetails.getUsername());
+        UserDto userDto = new UserDto(user.getId(), user.getUsername(), user.getEmail(), null);
+        return ResponseEntity.ok(userDto);
+    }
+
     @PutMapping("/update")
-    public ResponseEntity<?> updateProfile(@RequestBody User updatedUser) {
-        if (updatedUser.getId() == null) {
-            return ResponseEntity.badRequest().body("User ID must not be null");
+    public ResponseEntity<?> updateProfile(@RequestBody UserDto updatedUserDTO) {
+        if (updatedUserDTO.getUsername() != null && !updatedUserDTO.getUsername().isEmpty()) {
+            if (!ValidationUtil.isValidUsername(updatedUserDTO.getUsername())) {
+                return ResponseEntity.badRequest().body("Invalid username format");
+            }
         }
-        try {
-            User existingUser = userService.getUserById(updatedUser.getId());
 
-            if (updatedUser.getUsername() != null && !updatedUser.getUsername().isEmpty()) {
-                if (!ValidationUtil.isValidUsername(updatedUser.getUsername())) {
-                    return ResponseEntity.badRequest().body("Invalid username format");
-                }
-                existingUser.setUsername(updatedUser.getUsername());
+        if (updatedUserDTO.getEmail() != null && !updatedUserDTO.getEmail().isEmpty()) {
+            if (!ValidationUtil.isValidEmail(updatedUserDTO.getEmail())) {
+                return ResponseEntity.badRequest().body("Invalid email format");
             }
-
-            if (updatedUser.getEmail() != null && !updatedUser.getEmail().isEmpty()) {
-                if (!ValidationUtil.isValidEmail(updatedUser.getEmail())) {
-                    return ResponseEntity.badRequest().body("Invalid email format");
-                }
-                existingUser.setEmail(updatedUser.getEmail());
-            }
-
-            if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
-                if (!ValidationUtil.isValidPassword(updatedUser.getPassword())) {
-                    return ResponseEntity.badRequest().body("Invalid password format");
-                }
-                existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-            }
-
-            User updated = userService.updateUser(existingUser);
-            return ResponseEntity.ok(updated);
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error updating profile: " + e.getMessage());
         }
+
+        if (updatedUserDTO.getPassword() != null && !updatedUserDTO.getPassword().isEmpty()) {
+            if (!ValidationUtil.isValidPassword(updatedUserDTO.getPassword())) {
+                return ResponseEntity.badRequest().body("Invalid password format");
+            }
+        }
+
+        User existingUser = userService.getUserById(updatedUserDTO.getId());
+        existingUser.setUsername(updatedUserDTO.getUsername());
+        existingUser.setEmail(updatedUserDTO.getEmail());
+
+        if (updatedUserDTO.getPassword() != null && !updatedUserDTO.getPassword().isEmpty()) {
+            existingUser.setPassword(passwordEncoder.encode(updatedUserDTO.getPassword()));
+        }
+
+        User updated = userService.updateUser(existingUser);
+        return ResponseEntity.ok(updated);
     }
 }

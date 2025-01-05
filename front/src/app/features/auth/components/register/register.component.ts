@@ -5,7 +5,7 @@ import { SessionService } from 'src/app/services/session.service';
 import { AuthService } from '../../services/auth.service';
 import { RegisterRequest } from '../../interfaces/registerRequest.interface';
 import { AuthSuccess } from '../../interfaces/authSuccess.interface';
-import { User } from 'src/app/interfaces/user.interface';
+import { UserDto } from 'src/app/interfaces/user.interface';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { passwordValidator } from '../../../../validators/password.validator';
 import { usernameValidator } from '../../../../validators/username.validator';
@@ -50,7 +50,7 @@ export class RegisterComponent {
       (response: AuthSuccess) => {
         localStorage.setItem('token', response.token);
         this.authService.me().subscribe(
-          (user: User) => {
+          (user: UserDto) => {
             this.sessionService.logIn(user);
             this.router.navigate(['/posts']);
           },

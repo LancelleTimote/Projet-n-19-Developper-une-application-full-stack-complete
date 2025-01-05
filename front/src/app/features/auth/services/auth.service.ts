@@ -4,7 +4,7 @@ import { Observable, tap } from 'rxjs';
 import { LoginRequest } from '../interfaces/loginRequest.interface';
 import { AuthSuccess } from '../interfaces/authSuccess.interface';
 import { RegisterRequest } from '../interfaces/registerRequest.interface';
-import { User } from 'src/app/interfaces/user.interface';
+import { UserDto } from 'src/app/interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -48,11 +48,11 @@ export class AuthService {
       );
   }
 
-  me(): Observable<User> {
-    return this.httpClient.get<User>(`${this.pathService}/me`);
+  me(): Observable<UserDto> {
+    return this.httpClient.get<UserDto>('/api/user/me');
   }
 
-  get currentUser(): User | null {
+  get currentUser(): UserDto | null {
     const user = localStorage.getItem('currentUser');
     return user ? JSON.parse(user) : null;
   }
