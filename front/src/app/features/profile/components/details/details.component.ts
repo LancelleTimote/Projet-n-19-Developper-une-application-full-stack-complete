@@ -24,13 +24,12 @@ export class DetailsComponent implements OnInit {
     private detailsService: DetailsService,
     private router: Router,
     private sessionService: SessionService,
-    private formBuilder: FormBuilder,
-    private authService: AuthService
+    private formBuilder: FormBuilder
   ) {
     this.profileForm = this.formBuilder.group({
       username: ['', [usernameValidator]],
       email: ['', [Validators.email]],
-      password: ['', passwordValidator],
+      password: ['', []],
     });
   }
 
@@ -96,6 +95,25 @@ export class DetailsComponent implements OnInit {
   }
 
   onSubmit(): void {
+    const passwordControl = this.profileForm.get('password');
+
+    if (
+      passwordControl &&
+      passwordControl.value &&
+      passwordControl.value.trim() !== ''
+    ) {
+      passwordControl.setValidators([passwordValidator]);
+    } else {
+      passwordControl?.clearValidators();
+    }
+
+    passwordControl?.updateValueAndValidity();
+
+    if (this.profileForm.invalid) {
+      alert('Veuillez vérifier que tous les champs sont correctement remplis.');
+      return;
+    }
+
     const updatedUser = this.profileForm.value;
     const currentUser = this.sessionService.getCurrentUser();
 
@@ -111,6 +129,8 @@ export class DetailsComponent implements OnInit {
 
     if (updatedUser.password && updatedUser.password.trim() !== '') {
       updatedData.password = updatedUser.password;
+    } else {
+      delete updatedData.password;
     }
 
     if (Object.keys(updatedData).length === 1) {
@@ -121,10 +141,16 @@ export class DetailsComponent implements OnInit {
     this.detailsService.updateProfile(updatedData).subscribe({
       next: (response) => {
         alert('Profil mis à jour avec succès !');
-        localStorage.setItem(
-          'currentUser',
-          JSON.stringify({ ...currentUser, ...updatedData })
-        );
+
+        if (updatedData.email && updatedData.email !== currentUser.email) {
+          this.sessionService.logOut();
+          this.router.navigate(['/']);
+        } else {
+          localStorage.setItem(
+            'currentUser',
+            JSON.stringify({ ...currentUser, ...updatedData })
+          );
+        }
       },
       error: (error) => {
         alert(`Erreur lors de la mise à jour : ${error.error}`);

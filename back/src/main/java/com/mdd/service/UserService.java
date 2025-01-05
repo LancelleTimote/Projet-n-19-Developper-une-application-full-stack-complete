@@ -1,5 +1,6 @@
 package com.mdd.service;
 
+import com.mdd.dto.UserDto;
 import com.mdd.exception.UserNotFoundException;
 import com.mdd.model.User;
 import com.mdd.repository.UserRepository;
@@ -59,27 +60,32 @@ public class UserService implements UserDetailsService {
                 .build();
     }
 
-    public User updateUser(User updatedUser) {
-        if (updatedUser.getUsername() != null && !ValidationUtil.isValidUsername(updatedUser.getUsername())) {
-            throw new IllegalArgumentException("Invalid username format");
-        }
-        if (updatedUser.getEmail() != null && !ValidationUtil.isValidEmail(updatedUser.getEmail())) {
-            throw new IllegalArgumentException("Invalid email format");
-        }
-        if (updatedUser.getPassword() != null && !ValidationUtil.isValidPassword(updatedUser.getPassword())) {
-            throw new IllegalArgumentException("Invalid password format");
-        }
+    public User updateUser(UserDto userDto) {
+        User user = userRepository.findById(userDto.getId())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        User existingUser = userRepository.findById(updatedUser.getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        existingUser.setUsername(updatedUser.getUsername());
-        existingUser.setEmail(updatedUser.getEmail());
-
-        if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
-            existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        if (userDto.getUsername() != null && !userDto.getUsername().isEmpty()) {
+            if (!ValidationUtil.isValidUsername(userDto.getUsername())) {
+                throw new IllegalArgumentException("Invalid username format");
+            }
+            user.setUsername(userDto.getUsername());
         }
 
-        return userRepository.save(existingUser);
+        if (userDto.getEmail() != null && !userDto.getEmail().isEmpty()) {
+            if (!ValidationUtil.isValidEmail(userDto.getEmail())) {
+                throw new IllegalArgumentException("Invalid email format");
+            }
+            user.setEmail(userDto.getEmail());
+        }
+
+        if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
+            if (!ValidationUtil.isValidPassword(userDto.getPassword())) {
+                throw new IllegalArgumentException("Invalid password format");
+            }
+            String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+            user.setPassword(encodedPassword);
+        }
+
+        return userRepository.save(user);
     }
 }
