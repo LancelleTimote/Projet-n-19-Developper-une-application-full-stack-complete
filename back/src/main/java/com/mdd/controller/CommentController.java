@@ -2,12 +2,16 @@ package com.mdd.controller;
 
 import com.mdd.dto.CommentDto;
 import com.mdd.model.Comment;
+import com.mdd.model.CustomUserDetails;
 import com.mdd.model.Post;
 import com.mdd.model.User;
 import com.mdd.service.CommentService;
 import com.mdd.service.PostService;
 import com.mdd.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,6 +45,18 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<CommentDto> createComment(@RequestBody Comment comment) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = userService.getUserByEmail(userDetails.getEmail());
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
         if (comment.getPost() == null || comment.getPost().getId() == null) {
             return ResponseEntity.badRequest().body(null);
         }
@@ -52,16 +68,6 @@ public class CommentController {
 
         Post post = postOptional.get();
         comment.setPost(post);
-
-        if (comment.getUser() == null || comment.getUser().getId() == null) {
-            return ResponseEntity.badRequest().body(null);
-        }
-
-        User user = userService.getUserById(comment.getUser().getId());
-        if (user == null) {
-            return ResponseEntity.badRequest().body(null);
-        }
-
         comment.setUser(user);
 
         Comment savedComment = commentService.createComment(comment);
